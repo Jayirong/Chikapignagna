@@ -18,11 +18,24 @@ import com.example.chikapignagna.ui.theme.ChikapignagnaTheme
 
 //este composale define la pantalla de inicio de sesion
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    onLoginSuccess: (String) -> Unit
+) {
+    //Array con usuarios de prueba
+    val usuarios = listOf(
+        Usuario(email= "pepe@email.com", contrasena = "elpepe"),
+        Usuario(email= "tilin@email.com", contrasena = "esotilin"),
+        Usuario(email= "etesech@email.com", contrasena = "etesech"),
+        Usuario(email= "skibidi@email.com", contrasena = "toilet"),
+        Usuario(email= "sans@email.com", contrasena = "biomadesans")
+    )
+
     //Variables :P, rememberSaveable sirve para que las variables conserven su estado en cosas como rotacion de pantalla
     var email by rememberSaveable { mutableStateOf("")}
     var contrasena by rememberSaveable { mutableStateOf("")}
     var contraVisible by rememberSaveable { mutableStateOf(false)}
+    var errorMensaje by rememberSaveable { mutableStateOf("")}
 
     //Column ayuda a organizar los cosos de forma vertical, a partir de aca nos centramos en la UI
     Column(
@@ -65,22 +78,37 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        //boton de iniciar sesion, falta una funcionalidad real
+        //boton de iniciar sesion
         Button(
-            onClick = { },
+            onClick = {
+                val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == contrasena }
+                if (usuarioEncontrado != null) {
+                    onLoginSuccess(email) //si el login es exitoso llamamos al onloginsuccess con el email del usuario
+                } else {
+                    errorMensaje = "Usuario o contraseña incorrectos."
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text ="Ingresar")
         }
 
-        //boton de texto
+        //si el ingreso es erroneo mostramos el mensaje
+        if (errorMensaje.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = errorMensaje, color = MaterialTheme.colorScheme.error)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        //boton de texto, falta una funcionalidad real
         TextButton(onClick = {}) {
             Text(text = "¿Olvidaste tu contraseña?")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        //boton para crear nueva cuenta
+        //boton para crear nueva cuenta, falta una funcionalidad real
         OutlinedButton(
             onClick = { },
             modifier = Modifier.fillMaxWidth()
@@ -96,6 +124,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 @Composable
 fun LoginScreenPreview() {
     ChikapignagnaTheme {
-        LoginScreen()
+        //proporcionamos un lambda vacio como parametro
+        LoginScreen(onLoginSuccess = {})
     }
 }
