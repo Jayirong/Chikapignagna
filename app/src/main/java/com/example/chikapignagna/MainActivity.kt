@@ -37,16 +37,27 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(onLoginSuccess = { email ->
                             //navegacion hacia la pantalla de bienvenida al iniciar sesion con exito
                             navController.navigate("welcome/$email")
-                        })
+                        },
+                            onNavigateToRegister = {
+                                navController.navigate("register")
+                            })
+                    }
+                    composable("register") {
+                        RegistroScreen(
+                            onNavigateToLogin = {
+                                navController.popBackStack("login", inclusive = false)
+                            }
+                        )
                     }
                     //pantalla de bienvenida
-                    composable("Welcome/{email}") { backStackEntry ->
+                    composable("welcome/{email}") { backStackEntry ->
                         val email = backStackEntry.arguments?.getString("email") ?: ""
                         WelcomeScreen(email = email, onLogout = {
                             //al cerrar sesion se vuelve al login
                             navController.popBackStack("login", inclusive = false)
                         })
                     }
+
                 }
 
                 //esta me interesa que es Scaffold
@@ -65,6 +76,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainLoginScreenPreview() {
     ChikapignagnaTheme {
-        LoginScreen(onLoginSuccess = {})
+        LoginScreen(onLoginSuccess = {}, onNavigateToRegister = {})
     }
 }

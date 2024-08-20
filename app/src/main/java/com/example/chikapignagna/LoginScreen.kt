@@ -20,15 +20,16 @@ import com.example.chikapignagna.ui.theme.ChikapignagnaTheme
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginSuccess: (String) -> Unit
+    onLoginSuccess: (String) -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
     //Array con usuarios de prueba
     val usuarios = listOf(
-        Usuario(email= "pepe@email.com", contrasena = "elpepe"),
-        Usuario(email= "tilin@email.com", contrasena = "esotilin"),
-        Usuario(email= "etesech@email.com", contrasena = "etesech"),
-        Usuario(email= "skibidi@email.com", contrasena = "toilet"),
-        Usuario(email= "sans@email.com", contrasena = "biomadesans")
+        Usuario(nombre = "Pepe", email = "pepe@email.com", contrasena = "elpepe"),
+        Usuario(nombre = "Tilin", email = "tilin@email.com", contrasena = "esotilin"),
+        Usuario(nombre = "Etesech", email = "etesech@email.com", contrasena = "etesech"),
+        Usuario(nombre = "Skibidi", email = "skibidi@email.com", contrasena = "toilet"),
+        Usuario(nombre = "Sans", email = "sans@email.com", contrasena = "biomadesans")
     )
 
     //Variables :P, rememberSaveable sirve para que las variables conserven su estado en cosas como rotacion de pantalla
@@ -110,7 +111,7 @@ fun LoginScreen(
 
         //boton para crear nueva cuenta, falta una funcionalidad real
         OutlinedButton(
-            onClick = { },
+            onClick = { onNavigateToRegister() },
             modifier = Modifier.fillMaxWidth()
         ) {
            Text(text = "Crear nueva cuenta")
@@ -125,6 +126,6 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     ChikapignagnaTheme {
         //proporcionamos un lambda vacio como parametro
-        LoginScreen(onLoginSuccess = {})
+        LoginScreen(onLoginSuccess = {}, onNavigateToRegister = {})
     }
 }
